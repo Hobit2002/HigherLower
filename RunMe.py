@@ -4,7 +4,7 @@ print("Welcome in Higher Lower Casiono. The higher will be your risk, the lower 
 GameDeck=[]
 Table=[]
 DiscardDeck=[]
-for Symbol in ['♠','♡','♢','♣']:
+for Symbol in ['\u2660','♥','♦','\u2663']:
     for relValue,imageValue in enumerate(['2','3','4','5','6','7','8','9','10','J','Q','K','A']):
         GameDeck.append({'image':imageValue+Symbol,'value':relValue})
 random.shuffle(GameDeck)
@@ -36,15 +36,16 @@ def turnCard(serialNum):
 #Introduce player to the game
 print("""
     Hi, You came here with 1000€ and my job is to strip you of them.
-    However, not to be shut down immediately, I'll give you a chance to be the one, who enriches himself.
-    In a moment, I've already placed ten cards here, of with only one is turned faced up.
+    However I'll give you a chance to be the one, who enriches himself.
+    I've already placed ten cards here, of with only one is turned faced up.
     At first, you'll choose a number from interval <4,10> and amount of money, you're willing to bet.
     Then I'll start turning the cards over. Their count will be equal to the number you've chosen.
-    Before each turnover, youl'll bet if the next card is of smaller, equal or biger value to the 
-    preceding one. If the truth will be on your side, the amount of your money will be multiplied by two
+    Before each turnover, youl'll bet if the next card has higher,lower or equal value to the 
+    preceding one. If the truth will be on your side, the amount of money you've bet will be multiplied by two
     (and if you keep your success till the end, I'll giv it to you).
     However, if you'll mislead, I'll take your money away.
-    If you get bored, press Ctrl+C""")
+    Leave by pressing Ctrl+C
+    """)
 #Start the game
 Finances = 1000
 while Finances>0:
@@ -65,7 +66,7 @@ while Finances>0:
         try:
             Bet = int(input("How much money do you bet(You have %s€ in the moment)?"%(Finances)))
             if Bet>Finances:print("Come on! You can't bet money you don't have.")
-            elif Bet<0:print("Do you think we are fools? Stop begging and play!")
+            elif Bet<0:print("Do you think we I'm a fool? Stop begging and play!")
         except ValueError:
             print("Your answer has to be a number.")
     Finances-=Bet
@@ -81,7 +82,7 @@ while Finances>0:
         NewValue=Table[cn]['value']
         HigherCond = Prediction[0].lower()=="h" and NewValue>OldValue
         LowerCond = Prediction[0].lower()=="l" and NewValue<OldValue
-        EqualCond = len(Prediction)==0 and NewValue==OldValue
+        EqualCond = len(Prediction)==1 and NewValue==OldValue
         if HigherCond or LowerCond or EqualCond:
             Bet*=2
             print("Lucky you! Your bet was multiplied so now I owe you %s€"%Bet)
@@ -98,4 +99,4 @@ while Finances>0:
     del Table[0:cn]
     #End the turn
     print("One turn behind us. I'm looking forward to the next, but if you want to leave, press Ctrl+C.")
-print("Goodbye,looser")
+print("You've lost all your money, so goodbye,looser!!!")
