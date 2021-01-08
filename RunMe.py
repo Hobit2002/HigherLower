@@ -10,6 +10,9 @@ for Symbol in ['♠','♡','♢','♣']:
 random.shuffle(GameDeck)
 
 def placeCards():
+    global Table
+    global GameDeck
+    global DiscardDeck
     NeededCards=10-len(Table)
     try:
         Table+=GameDeck[0:NeededCards]
@@ -31,7 +34,8 @@ def turnCard(serialNum):
     print(ToPrint)
 
 #Introduce player to the game
-print("""Hi, You came here with 1000€ and my job is to strip you of them.
+print("""
+    Hi, You came here with 1000€ and my job is to strip you of them.
     However, not to be shut down immediately, I'll give you a chance to be the one, who enriches himself.
     In a moment, I've already placed ten cards here, of with only one is turned faced up.
     At first, you'll choose a number from interval <4,10> and amount of money, you're willing to bet.
@@ -43,16 +47,32 @@ print("""Hi, You came here with 1000€ and my job is to strip you of them.
     If you get bored, press Ctrl+C""")
 #Start the game
 Finances = 1000
-while True:
+while Finances>0:
     #Show cards and ask player for Game parameters
     placeCards()
-    CardNum = int(input("With how many cards do you want play Choose at least 4 and at most 10? "))
-    Bet = int(input("How much money do you but. (You have {Finances}€ in the moment)"))
+    #Ask for a number of cards player wants to play with
+    CardNum=0
+    while CardNum<3 or CardNum>9:
+        try:
+            CardNum = int(input("With how many cards do you want play? Choose at least 4 and at most 9. "))
+            if CardNum>9:print("Your number can't be higher than 9.")
+            elif CardNum<4:print("Your number can't be lower than 4")
+        except ValueError:
+            print("Your answer has to be a number.")
+    #Let the player bet his money 
+    Bet=-1
+    while Bet > Finances or Bet<0:
+        try:
+            Bet = int(input("How much money do you bet(You have %s€ in the moment)?"%(Finances)))
+            if Bet>Finances:print("Come on! You can't bet money you don't have.")
+            elif Bet<0:print("Do you think we are fools? Stop begging and play!")
+        except ValueError:
+            print("Your answer has to be a number.")
     Finances-=Bet
     #Start turning the cards over
     for cn in range(1,CardNum+1):
         #Let player bet
-        Prediction = input("Higher:h; Lower:l;Equal: nothing, just press Enter")
+        Prediction = input("Higher:h; Lower:l;Equal: nothing, just press Enter:")+" "
         #Turn over the next card
         print("Lets turn the card:")
         turnCard(cn)
@@ -67,9 +87,10 @@ while True:
             print("Lucky you! Your bet was multiplied so now I owe you %s€"%Bet)
         else:
             print("I'm sorry. But you've lost.")
+            Bet=-1
             break
     #If player wins all guesses, give him money he deserves
-    if cn==CardNum:
+    if Bet>0:
         print("Congratulations. You've won and I'll give you %s€"%Bet)
         Finances+=Bet
     #Discard revealed cards except the last one
@@ -77,4 +98,4 @@ while True:
     del Table[0:cn]
     #End the turn
     print("One turn behind us. I'm looking forward to the next, but if you want to leave, press Ctrl+C.")
-
+print("Goodbye,looser")
