@@ -11,7 +11,14 @@ random.shuffle(GameDeck)
 
 def placeCards():
     NeededCards=10-len(Table)
-    Table+=GameDeck[0:NeededCards]
+    try:
+        Table+=GameDeck[0:NeededCards]
+    except IndexError:
+        random.shuffle(DiscardDeck)
+        GameDeck+=DiscardDeck
+        DiscardDeck=[]
+        Table+=GameDeck[0:NeededCards]
+        print("I've shuffeld discarded card to the deck, so be ready to see them")
     del GameDeck[0:NeededCards]
     LineToPrint = Table[0]["image"] + 9*" ?"
     print(LineToPrint)
@@ -60,5 +67,14 @@ while True:
             print("Lucky you! Your bet was multiplied so now I owe you %s€"%Bet)
         else:
             print("I'm sorry. But you've lost.")
+            break
     #If player wins all guesses, give him money he deserves
+    if cn==CardNum:
+        print("Congratulations. You've won and I'll give you %s€"%Bet)
+        Finances+=Bet
+    #Discard revealed cards except the last one
+    DiscardDeck+=Table[0:cn]
+    del Table[0:cn]
+    #End the turn
+    print("One turn behind us. I'm looking forward to the next, but if you want to leave, press Ctrl+C.")
 
