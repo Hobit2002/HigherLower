@@ -1,5 +1,5 @@
 # HigherLower
-A simple terminal game written in Python.
+A simple terminal game written in Python. For more information read README.md
 
 ## Prerequisities
 All you need to enter into the world of average gambling game is:
