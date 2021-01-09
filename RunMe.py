@@ -4,7 +4,7 @@ print("Welcome in Higher Lower Casiono. The higher will be your risk, the lower 
 GameDeck=[]
 Table=[]
 DiscardDeck=[]
-for Symbol in ['\u2660','♥','♦','\u2663']:
+for Symbol in ['♠','♥','♦','♣']:
     for relValue,imageValue in enumerate(['2','3','4','5','6','7','8','9','10','J','Q','K','A']):
         GameDeck.append({'image':imageValue+Symbol,'value':relValue})
 random.shuffle(GameDeck)
